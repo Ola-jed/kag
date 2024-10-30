@@ -1,5 +1,7 @@
 package core.objects
 
+import utils.ensure
+
 data class Monomial<T : Number>(
     val ring: PolynomialRing<T>,
     val exponents: Map<Indeterminate, Int>
@@ -9,8 +11,12 @@ data class Monomial<T : Number>(
     }
 
     init {
-        require(exponents.keys.all { it in ring.indeterminates }) {
-            "All variables used in the monomial must belong to the polynomial ring."
+        ensure("All variables used in the monomial must belong to the polynomial ring.") {
+            exponents.keys.all { it in ring.indeterminates }
         }
+    }
+
+    fun toPolynomial(coefficient: T): Polynomial<T> {
+        return Polynomial(coefficient to this)
     }
 }

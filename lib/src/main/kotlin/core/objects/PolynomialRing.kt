@@ -17,4 +17,9 @@ data class PolynomialRing<T : Number>(val indeterminates: List<Indeterminate>) {
 
         return Monomial(this, indeterminatesMap)
     }
+
+    override fun toString(): String {
+        val indeterminatesString = indeterminates.joinToString(", ")
+        return "k[$indeterminatesString]"
+    }
 }

@@ -1,0 +1,66 @@
+package core.operators
+
+import core.Operation
+import core.objects.Monomial
+import core.objects.Polynomial
+import utils.Numbers
+
+operator fun <T : Number> Polynomial<T>.plus(rhs: Polynomial<T>): Polynomial<T> {
+    return this.op(rhs, Operation.PLUS)
+}
+
+operator fun <T : Number> Polynomial<T>.minus(rhs: Polynomial<T>): Polynomial<T> {
+    return this.op(rhs, Operation.MINUS)
+}
+
+operator fun <T : Number> Polynomial<T>.times(rhs: T): Polynomial<T> {
+    return Polynomial(
+        _monomials = this.monomials.map { Numbers.times(it.first, rhs) to it.second },
+        ordering = this.ordering
+    )
+}
+
+fun <T : Number> Polynomial<T>.op(rhs: Polynomial<T>, operation: Operation): Polynomial<T> {
+    var i = 0
+    var j = 0
+    var resultingMonomials = mutableListOf<Pair<T, Monomial<T>>>()
+
+    while (i < this.monomials.size || j < rhs.monomials.size) {
+        if (i < this.monomials.size && j < rhs.monomials.size) {
+            val lhsCurrentTerm = this.monomials[i]
+            val rhsCurrentTerm = rhs.monomials[j]
+            val comparisonResult = this.ordering.compare(lhsCurrentTerm.second, rhsCurrentTerm.second)
+
+            if (comparisonResult == 0) {
+                var result = if (operation == Operation.PLUS) {
+                    Numbers.add(lhsCurrentTerm.first, rhsCurrentTerm.first)
+                } else {
+                    Numbers.subtract(lhsCurrentTerm.first, rhsCurrentTerm.first)
+                }
+
+                if (result.toDouble() != 0.0) {
+                    resultingMonomials.add(Pair(result, lhsCurrentTerm.second))
+                }
+
+                i ++
+                j ++
+            } else if (comparisonResult < 0) {
+                resultingMonomials.add(lhsCurrentTerm)
+                i ++
+            } else {
+                resultingMonomials.add(rhsCurrentTerm)
+                j ++
+            }
+        } else if (i < this.monomials.size) {
+            // rhs iteration is done, just copy the rest of lhs terms into the result
+            resultingMonomials.addAll(this.monomials.subList(i, this.monomials.size))
+            i = this.monomials.size
+        } else {
+            // lhs iteration is done, just copy the rest of rhs terms into the result
+            resultingMonomials.addAll(rhs.monomials.subList(i, rhs.monomials.size))
+            j = rhs.monomials.size
+        }
+    }
+
+    return Polynomial(_monomials = resultingMonomials, ordering = this.ordering)
+}

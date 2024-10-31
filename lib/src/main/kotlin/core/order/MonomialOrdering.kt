@@ -92,7 +92,6 @@ object CommonOrderings {
 
                 val xElim = x.copy(exponents = x.exponents.filter { eliminationVariables.contains(it.key) })
                 val yElim = y.copy(exponents = y.exponents.filter { eliminationVariables.contains(it.key) })
-
                 val eliminationComparison = eliminationVariablesOrdering.compare(xElim, yElim)
                 if (eliminationComparison != 0) {
                     return eliminationComparison

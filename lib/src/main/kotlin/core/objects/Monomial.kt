@@ -20,11 +20,10 @@ data class Monomial<T : Number>(
 
     override fun toString(): String {
         val exponentString = exponents.entries
-            .filter { it.value != 0 }
             .joinToString(" * ") { (variable, exponent) ->
                 if (exponent == 1) "$variable" else "$variable^$exponent"
             }
 
-        return if (exponentString.isEmpty()) "$ring(0)" else exponentString
+        return if (exponentString.isEmpty()) "0" else exponentString
     }
 }

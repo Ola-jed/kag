@@ -4,6 +4,7 @@ import core.Operation
 import core.objects.Monomial
 import core.objects.Polynomial
 import utils.Numbers
+import utils.ensure
 
 operator fun <T : Number> Polynomial<T>.plus(rhs: Polynomial<T>): Polynomial<T> {
     return this.op(rhs, Operation.PLUS)
@@ -18,6 +19,22 @@ operator fun <T : Number> Polynomial<T>.times(rhs: T): Polynomial<T> {
         _monomials = this.monomials.map { Numbers.times(it.first, rhs) to it.second },
         ordering = this.ordering
     )
+}
+
+operator fun <T : Number> Polynomial<T>.times(rhs: Monomial<T>): Polynomial<T> {
+    val monomials = this.monomials.map {
+        ensure("Monomial multiplication can only be done in the same ring") {
+            rhs.ring == it.second.ring
+        }
+
+        Pair(it.first, it.second * rhs)
+    }
+
+    return Polynomial(_monomials = monomials, ordering = this.ordering)
+}
+
+operator fun <T : Number> Polynomial<T>.times(rhs: Polynomial<T>): Polynomial<T> {
+    TODO()
 }
 
 fun <T : Number> Polynomial<T>.op(rhs: Polynomial<T>, operation: Operation): Polynomial<T> {
@@ -42,14 +59,14 @@ fun <T : Number> Polynomial<T>.op(rhs: Polynomial<T>, operation: Operation): Pol
                     resultingMonomials.add(Pair(result, lhsCurrentTerm.second))
                 }
 
-                i ++
-                j ++
+                i++
+                j++
             } else if (comparisonResult < 0) {
                 resultingMonomials.add(lhsCurrentTerm)
-                i ++
+                i++
             } else {
                 resultingMonomials.add(rhsCurrentTerm)
-                j ++
+                j++
             }
         } else if (i < this.monomials.size) {
             // rhs iteration is done, just copy the rest of lhs terms into the result

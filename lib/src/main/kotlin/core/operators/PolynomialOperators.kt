@@ -34,7 +34,16 @@ operator fun <T : Number> Polynomial<T>.times(rhs: Monomial<T>): Polynomial<T> {
 }
 
 operator fun <T : Number> Polynomial<T>.times(rhs: Polynomial<T>): Polynomial<T> {
-    TODO()
+    if (this.monomials.isEmpty() || rhs.monomials.isEmpty()) {
+        return Polynomial()
+    }
+
+    var resultingPolynomial = (this.monomials.first().second * rhs) * this.monomials.first().first
+    for (i in 1..<this.monomials.size) {
+        resultingPolynomial += (this.monomials[i].second * rhs) * this.monomials[i].first
+    }
+
+    return resultingPolynomial
 }
 
 fun <T : Number> Polynomial<T>.op(rhs: Polynomial<T>, operation: Operation): Polynomial<T> {

@@ -4,4 +4,4 @@ plugins {
 
 rootProject.name = "kag"
 
-include("lib", "sandbox", "java-sandbox")
+include("lib", "sandbox", "java-sandbox", "benchmark")

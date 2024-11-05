@@ -1,5 +1,6 @@
-package sources
+package sources.monomials
 
+import config.KagConfig
 import core.objects.Indeterminate
 import core.objects.Monomial
 import core.objects.PolynomialRing
@@ -8,9 +9,11 @@ import org.openjdk.jmh.annotations.*
 import java.util.concurrent.*
 
 @State(Scope.Benchmark)
-@Fork(1)
-@Measurement(iterations = 10, time = 5, timeUnit = TimeUnit.SECONDS)
-class MonomialBenchmark {
+@BenchmarkMode(Mode.Throughput)
+@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
+class MonomialOperationsBenchmark {
+    @Param("true", "false")
+    var preconditionChecksEnabled: String = "false"
     private lateinit var ring: PolynomialRing<Int>
     private lateinit var monomial1: Monomial<Int>
     private lateinit var monomial2: Monomial<Int>
@@ -47,6 +50,8 @@ class MonomialBenchmark {
                 Indeterminate("e") to 2,
             )
         )
+
+        KagConfig.PRECONDITIONS_CHECKS_ENABLED = preconditionChecksEnabled == "true"
     }
 
     @Benchmark

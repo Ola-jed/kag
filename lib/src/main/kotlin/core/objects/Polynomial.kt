@@ -32,10 +32,10 @@ data class Polynomial<T : Number>(
             .map { Pair(it.second, it.first) }.toList()
     }
 
-    fun multiDegree(order: MonomialOrdering<T>): Map<Indeterminate, Int> {
+    fun multiDegree(): Map<Indeterminate, Int> {
         val lm = _monomials.asSequence()
             .map { it.second }
-            .maxWith(order)
+            .maxWith(ordering)
         var degrees = mutableMapOf<Indeterminate, Int>()
         for (indeterminate in lm.ring.indeterminates) {
             degrees.put(indeterminate, lm.exponents.getOrDefault(indeterminate, 0))
@@ -43,20 +43,20 @@ data class Polynomial<T : Number>(
         return degrees
     }
 
-    fun leadingCoefficient(order: MonomialOrdering<T>): T {
+    fun leadingCoefficient(): T {
         return _monomials.asSequence()
-            .maxWith { x, y -> order.compare(x.second, y.second) }
+            .maxWith { x, y -> ordering.compare(x.second, y.second) }
             .first
     }
 
-    fun leadingMonomial(order: MonomialOrdering<T>): Monomial<T> {
+    fun leadingMonomial(): Monomial<T> {
         return _monomials.asSequence()
             .map { it.second }
-            .maxWith(order)
+            .maxWith(ordering)
     }
 
-    fun leadingTerm(order: MonomialOrdering<T>): Pair<T, Monomial<T>> {
-        return _monomials.asSequence().maxWith { x, y -> order.compare(x.second, y.second) }
+    fun leadingTerm(): Pair<T, Monomial<T>> {
+        return _monomials.asSequence().maxWith { x, y -> ordering.compare(x.second, y.second) }
     }
 
     companion object {

@@ -83,7 +83,7 @@ fun <T : Number> Polynomial<T>.op(rhs: Polynomial<T>, operation: Operation): Pol
             i = this.monomials.size
         } else {
             // lhs iteration is done, just copy the rest of rhs terms into the result
-            resultingMonomials.addAll(rhs.monomials.subList(i, rhs.monomials.size))
+            resultingMonomials.addAll(rhs.monomials.subList(j, rhs.monomials.size))
             j = rhs.monomials.size
         }
     }

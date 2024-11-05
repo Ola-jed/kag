@@ -2,8 +2,8 @@ package core.objects
 
 import utils.ensure
 
-data class PolynomialRing<T : Number>(val indeterminates: List<Indeterminate>) {
-    constructor(vararg variables: String) : this(variables.asList().map(::Indeterminate))
+data class PolynomialRing<T : Number>(val indeterminates: Array<Indeterminate>) {
+    constructor(vararg variables: String) : this(variables.map(::Indeterminate).toTypedArray())
 
     fun monomial(vararg exponents: Pair<String, Int>): Monomial<T> {
         val indeterminatesMap = mutableMapOf<Indeterminate, Int>()

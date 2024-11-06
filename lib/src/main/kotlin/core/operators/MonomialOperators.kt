@@ -10,8 +10,15 @@ operator fun <T : Number> Monomial<T>.times(rhs: Monomial<T>): Monomial<T> {
         this.ring == rhs.ring
     }
 
-    val resultExponents = this.exponents.toMutableMap()
-    rhs.exponents.forEach { (key, value) -> resultExponents.merge(key, value, Int::plus) }
+    val resultExponents = HashMap<Indeterminate, Int>(this.exponents.size + rhs.exponents.size)
+    for ((key, value) in this.exponents) {
+        resultExponents[key] = value
+    }
+
+    for ((key, value) in rhs.exponents) {
+        resultExponents[key] = resultExponents.getOrDefault(key, 0) + value
+    }
+
     return Monomial(this.ring, exponents = resultExponents)
 }
 

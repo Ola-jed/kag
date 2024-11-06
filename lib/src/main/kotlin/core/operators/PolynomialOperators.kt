@@ -16,7 +16,7 @@ operator fun <T : Number> Polynomial<T>.minus(rhs: Polynomial<T>): Polynomial<T>
 
 operator fun <T : Number> Polynomial<T>.times(rhs: T): Polynomial<T> {
     return Polynomial(
-        _monomials = this.monomials.map { Numbers.times(it.first, rhs) to it.second },
+        monomials = this.monomials.map { Numbers.times(it.first, rhs) to it.second }.toTypedArray(),
         ordering = this.ordering
     )
 }

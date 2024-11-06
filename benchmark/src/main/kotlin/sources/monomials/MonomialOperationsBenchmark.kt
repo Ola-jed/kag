@@ -21,33 +21,36 @@ class MonomialOperationsBenchmark {
 
     @Setup
     fun setUp() {
-        ring = PolynomialRing<Int>("a", "b", "c", "d", "e")
+        ring = PolynomialRing<Int>(('a'..'z').map { Indeterminate(it.toString()) }.toTypedArray())
 
         monomial1 = Monomial<Int>(
             ring = ring,
-            exponents = mapOf(
-                Indeterminate("a") to 1,
-                Indeterminate("b") to 1,
-                Indeterminate("c") to 1,
-                Indeterminate("d") to 1,
-                Indeterminate("e") to 1
-            )
+            exponents = ('a'..'z').associate { Indeterminate(it.toString()) to 1 }
         )
 
         monomial2 = Monomial<Int>(
             ring = ring,
             exponents = mapOf(
-                Indeterminate("a") to 2,
-                Indeterminate("b") to 2,
-                Indeterminate("c") to 2
+                Indeterminate("a") to 10,
+                Indeterminate("b") to 8,
+                Indeterminate("c") to 12,
+                Indeterminate("d") to 5,
+                Indeterminate("e") to 15,
+                Indeterminate("f") to 7,
+                Indeterminate("g") to 6
             )
         )
 
         monomial3 = Monomial<Int>(
             ring = ring,
             exponents = mapOf(
-                Indeterminate("d") to 2,
-                Indeterminate("e") to 2,
+                Indeterminate("h") to 20,
+                Indeterminate("i") to 25,
+                Indeterminate("j") to 30,
+                Indeterminate("k") to 10,
+                Indeterminate("l") to 18,
+                Indeterminate("m") to 22,
+                Indeterminate("n") to 24
             )
         )
 

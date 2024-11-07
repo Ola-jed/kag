@@ -21,36 +21,36 @@ class MonomialOperationsBenchmark {
 
     @Setup
     fun setUp() {
-        ring = PolynomialRing<Int>(('a'..'z').map { Indeterminate(it.toString()) }.toTypedArray())
+        ring = PolynomialRing<Int>(('a'..'z').map { Indeterminate(it) }.toTypedArray())
 
         monomial1 = Monomial<Int>(
             ring = ring,
-            exponents = ('a'..'z').associate { Indeterminate(it.toString()) to 1 }
+            exponents = ('a'..'z').associate { Indeterminate(it) to 1 }
         )
 
         monomial2 = Monomial<Int>(
             ring = ring,
             exponents = mapOf(
-                Indeterminate("a") to 10,
-                Indeterminate("b") to 8,
-                Indeterminate("c") to 12,
-                Indeterminate("d") to 5,
-                Indeterminate("e") to 15,
-                Indeterminate("f") to 7,
-                Indeterminate("g") to 6
+                Indeterminate('a') to 10,
+                Indeterminate('b') to 8,
+                Indeterminate('c') to 12,
+                Indeterminate('d') to 5,
+                Indeterminate('e') to 15,
+                Indeterminate('f') to 7,
+                Indeterminate('g') to 6
             )
         )
 
         monomial3 = Monomial<Int>(
             ring = ring,
             exponents = mapOf(
-                Indeterminate("h") to 20,
-                Indeterminate("i") to 25,
-                Indeterminate("j") to 30,
-                Indeterminate("k") to 10,
-                Indeterminate("l") to 18,
-                Indeterminate("m") to 22,
-                Indeterminate("n") to 24
+                Indeterminate('h') to 20,
+                Indeterminate('i') to 25,
+                Indeterminate('j') to 30,
+                Indeterminate('k') to 10,
+                Indeterminate('l') to 18,
+                Indeterminate('m') to 22,
+                Indeterminate('n') to 24
             )
         )
 

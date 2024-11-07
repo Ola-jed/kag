@@ -17,7 +17,9 @@ data class Polynomial<T : Number>(
 
     init {
         // Sort monomials by decreasing order and group by monomial part for simplification
+        // Only keep monomials that are nonzero
         this._monomials = this._monomials
+            .filter { it.second.degree > 0 || it.first.toDouble() != 0.0 }
             .groupBy { it.second }
             .mapValues { (_, terms) ->
                 var sum = terms[0].first

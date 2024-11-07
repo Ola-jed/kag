@@ -70,25 +70,21 @@ object CommonOrderings {
     ): MonomialOrdering<T> {
         return object : MonomialOrdering<T> {
             override fun compare(x: Monomial<T>, y: Monomial<T>): Int {
+                ensure("The monomials must be defined over the same polynomial ring") {
+                    x.ring == y.ring
+                }
+
                 ensure("Indeterminates for the ordering must belong to the ring") {
                     val indeterminateSet = x.ring.indeterminates.toSet()
                     val requiredSet = eliminationVariables + retainedVariables
-                    for (indeterminate in requiredSet) {
-                        if (!indeterminateSet.contains(indeterminate)) {
-                            return@ensure false
-                        }
-                    }
 
                     ensure("Indeterminates in the ring do not match the required variables for the ordering") {
-                        indeterminateSet.size == requiredSet.size
+                        indeterminateSet.containsAll(requiredSet)
                     }
 
                     true
                 }
 
-                ensure("The monomials must be defined over the same polynomial ring") {
-                    x.ring == y.ring
-                }
 
                 val xElim = x.copy(exponents = x.exponents.filter { eliminationVariables.contains(it.key) })
                 val yElim = y.copy(exponents = y.exponents.filter { eliminationVariables.contains(it.key) })

@@ -54,6 +54,19 @@ object Numbers {
     }
 
     @Suppress("UNCHECKED_CAST")
+    fun <T : Number> opposite(x: T): T {
+        return when (x) {
+            is Int    -> -x as T
+            is Byte   -> -x as T
+            is Short  -> -x as T
+            is Long   -> -x as T
+            is Float  -> -x as T
+            is Double -> -x as T
+            else      -> throw IllegalArgumentException()
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
     fun <T : Number> div(a: T, b: T): T {
         return when {
             a is Int && b is Int       -> (a.toInt() / b.toInt()) as T

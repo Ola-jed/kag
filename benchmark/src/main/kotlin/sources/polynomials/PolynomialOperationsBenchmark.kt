@@ -32,14 +32,14 @@ class PolynomialOperationsBenchmark {
 
     @Setup
     fun setUp() {
-        ring = PolynomialRing<Int>("a", "b", "c")
+        ring = PolynomialRing<Int>('a', 'b', 'c')
 
-        val a = Monomial<Int>(ring = ring, exponents = mapOf(Indeterminate("a") to 1))
-        val b = Monomial<Int>(ring = ring, exponents = mapOf(Indeterminate("b") to 1))
-        val c = Monomial<Int>(ring = ring, exponents = mapOf(Indeterminate("c") to 1))
-        val a2 = Monomial<Int>(ring = ring, exponents = mapOf(Indeterminate("a") to 2))
-        val b2 = Monomial<Int>(ring = ring, exponents = mapOf(Indeterminate("b") to 2))
-        val c2 = Monomial<Int>(ring = ring, exponents = mapOf(Indeterminate("c") to 2))
+        val a = Monomial<Int>(ring = ring, exponents = mapOf(Indeterminate('a') to 1))
+        val b = Monomial<Int>(ring = ring, exponents = mapOf(Indeterminate('b') to 1))
+        val c = Monomial<Int>(ring = ring, exponents = mapOf(Indeterminate('c') to 1))
+        val a2 = Monomial<Int>(ring = ring, exponents = mapOf(Indeterminate('a') to 2))
+        val b2 = Monomial<Int>(ring = ring, exponents = mapOf(Indeterminate('b') to 2))
+        val c2 = Monomial<Int>(ring = ring, exponents = mapOf(Indeterminate('c') to 2))
 
         polynomial1 = Polynomial(
             1 to a,
@@ -54,15 +54,15 @@ class PolynomialOperationsBenchmark {
                 "gradedReverseLexicographicOrder" -> CommonOrderings.gradedReverseLexicographicOrder<Int>()
                 "weightOrder"                     -> CommonOrderings.weightOrder<Int>(
                     weights = mapOf(
-                        Indeterminate("a") to 1,
-                        Indeterminate("b") to 2,
-                        Indeterminate("c") to 3,
+                        Indeterminate('a') to 1,
+                        Indeterminate('b') to 2,
+                        Indeterminate('c') to 3,
                     )
                 )
 
                 else                              -> CommonOrderings.eliminationOrder<Int>(
-                    eliminationVariables = setOf(Indeterminate("a")),
-                    retainedVariables = setOf(Indeterminate("b"), Indeterminate("c"))
+                    eliminationVariables = setOf(Indeterminate('a')),
+                    retainedVariables = setOf(Indeterminate('b'), Indeterminate('c'))
                 )
             }
         )
@@ -77,15 +77,15 @@ class PolynomialOperationsBenchmark {
                 "gradedReverseLexicographicOrder" -> CommonOrderings.gradedReverseLexicographicOrder<Int>()
                 "weightOrder"                     -> CommonOrderings.weightOrder<Int>(
                     weights = mapOf(
-                        Indeterminate("a") to 1,
-                        Indeterminate("b") to 2,
-                        Indeterminate("c") to 3,
+                        Indeterminate('a') to 1,
+                        Indeterminate('b') to 2,
+                        Indeterminate('c') to 3,
                     )
                 )
 
                 else                              -> CommonOrderings.eliminationOrder<Int>(
-                    eliminationVariables = setOf(Indeterminate("a")),
-                    retainedVariables = setOf(Indeterminate("b"), Indeterminate("c"))
+                    eliminationVariables = setOf(Indeterminate('a')),
+                    retainedVariables = setOf(Indeterminate('b'), Indeterminate('c'))
                 )
             }
         )

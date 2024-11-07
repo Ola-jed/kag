@@ -32,6 +32,8 @@ operator fun <T : Number> Monomial<T>.div(rhs: Monomial<T>): Monomial<T> {
         var difference = this.exponents.getOrDefault(indeterminateAndExponent.key, 0) - indeterminateAndExponent.value
         if (difference >= 0) {
             resultExponents.put(indeterminateAndExponent.key, difference)
+        } else {
+            return Monomial(ring, emptyMap())
         }
     }
 

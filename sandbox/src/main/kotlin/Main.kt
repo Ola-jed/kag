@@ -1,21 +1,27 @@
-import core.functions.sPolynomial
-import core.objects.Indeterminate
-import core.objects.Monomial
 import core.objects.Polynomial
 import core.objects.PolynomialRing
+import core.operators.*
 
 fun main() {
-    val ring = PolynomialRing<Double>("x", "y", "z")
+    val ring = PolynomialRing<Int>('x', 'y')
 
-    val x3y = Monomial(ring = ring, mapOf(Indeterminate("x") to 3, Indeterminate("y") to 1))
-    val xy = Monomial(ring = ring, mapOf(Indeterminate("x") to 1, Indeterminate("y") to 1))
-    val y2 = Monomial(ring = ring, mapOf(Indeterminate("y") to 2))
+    val xy = ring.monomial('x' to 1, 'y' to 1)
+    val xy2 = ring.monomial('x' to 1, 'y' to 2)
+    val x = ring.monomial('x' to 1)
+    val y2 = ring.monomial('y' to 2)
+    val one = ring.monomial('x' to 0)
 
-    val xy2 = Monomial(ring = ring, mapOf(Indeterminate("x") to 1, Indeterminate("y") to 2))
-    val y3 = Monomial(ring = ring, mapOf(Indeterminate("y") to 3))
 
-    val f1 = Polynomial(3.0 to x3y, 2.0 to xy, -1.0 to y2)
-    val f2 = Polynomial(2.0 to xy2, -5.0 to y3)
+    val f = Polynomial<Int>(1 to xy2, -1 to x)
+    val g = Polynomial<Int>(1 to xy, 1 to one)
+    val h = Polynomial<Int>(1 to y2, -1 to one)
 
-    println(sPolynomial(f1, f2))
+    val polynomials = arrayOf(h, g)
+
+    val result = f / polynomials
+    for (i in result.first.indices) {
+        println("${result.first[i]} for ${polynomials[i]}")
+    }
+
+    println("Remainder : ${result.second}")
 }

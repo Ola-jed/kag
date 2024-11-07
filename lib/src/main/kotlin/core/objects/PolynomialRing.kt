@@ -3,9 +3,9 @@ package core.objects
 import utils.ensure
 
 data class PolynomialRing<T : Number>(val indeterminates: Array<Indeterminate>) {
-    constructor(vararg variables: String) : this(variables.map(::Indeterminate).toTypedArray())
+    constructor(vararg variables: Char) : this(variables.map(::Indeterminate).toTypedArray())
 
-    fun monomial(vararg exponents: Pair<String, Int>): Monomial<T> {
+    fun monomial(vararg exponents: Pair<Char, Int>): Monomial<T> {
         val indeterminatesMap = mutableMapOf<Indeterminate, Int>()
         for (pair in exponents) {
             ensure("Unknown indeterminate ${pair.first} in the ring") {

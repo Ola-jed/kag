@@ -26,4 +26,31 @@ data class Monomial<T : Number>(
 
         return if (exponentString.isEmpty()) "0" else exponentString
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other == null) {
+            return false
+        }
+
+        if (other !is Monomial<T>) {
+            return false
+        }
+
+        if (ring != other.ring) {
+            return false
+        }
+
+        if (exponents.filter { it.value != 0 } != other.exponents.filter { it.value != 0 }) {
+            return false
+        }
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + ring.hashCode()
+        result = 31 * result + exponents.filter { it.value != 0 }.hashCode()
+        return result
+    }
 }

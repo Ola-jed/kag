@@ -49,7 +49,7 @@ operator fun <T : Number> Polynomial<T>.times(rhs: Polynomial<T>): Polynomial<T>
 
 // Divide a polynomial by a set of polynomials, get the quotient for each polynomial of the set and the remainder
 // We assume the polynomials are defined using the same ordering
-operator fun <T : Number> Polynomial<T>.div(rhs: Array<Polynomial<T>>): Pair<Array<Polynomial<T>>, Polynomial<T>> {
+operator fun <T : Number> Polynomial<T>.div(rhs: List<Polynomial<T>>): Pair<Array<Polynomial<T>>, Polynomial<T>> {
     var currentPolynomial = this
     var remainder = Polynomial(_monomials = listOf(), ordering = this.ordering)
     val leadingTerms = rhs.map { it.leadingTerm() }
@@ -80,6 +80,39 @@ operator fun <T : Number> Polynomial<T>.div(rhs: Array<Polynomial<T>>): Pair<Arr
     }
 
     return quotients to remainder
+}
+
+// Get the remainder of the division by a set of polynomials
+// We assume the polynomials are defined using the same ordering
+operator fun <T : Number> Polynomial<T>.rem(rhs: List<Polynomial<T>>): Polynomial<T> {
+    var currentPolynomial = this
+    var remainder = Polynomial(_monomials = listOf(), ordering = this.ordering)
+    val leadingTerms = rhs.map { it.leadingTerm() }
+
+    while (currentPolynomial.monomials.isNotEmpty()) {
+        val currentLeadingTerm = currentPolynomial.leadingTerm()
+        var divided = false
+
+        for (i in leadingTerms.indices) {
+            val term = leadingTerms[i]
+            val divisionResult = currentLeadingTerm.second / term.second
+
+            if (divisionResult.exponents.isNotEmpty()) {
+                val resultAsPolynomial = divisionResult.toPolynomial(Numbers.div(currentLeadingTerm.first, term.first))
+                currentPolynomial -= resultAsPolynomial * rhs[i]
+                divided = true
+                break
+            }
+        }
+
+        if (!divided) {
+            val fLeadingTermPolynomial = currentLeadingTerm.toPolynomial()
+            remainder += fLeadingTermPolynomial
+            currentPolynomial -= fLeadingTermPolynomial
+        }
+    }
+
+    return remainder
 }
 
 fun <T : Number> Polynomial<T>.op(rhs: Polynomial<T>, operation: Operation): Polynomial<T> {

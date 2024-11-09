@@ -1,27 +1,20 @@
+import core.functions.buchberger
 import core.objects.Polynomial
 import core.objects.PolynomialRing
-import core.operators.*
 
 fun main() {
-    val ring = PolynomialRing<Int>('x', 'y')
+    val ring = PolynomialRing<Double>('x', 'y')
 
-    val xy = ring.monomial('x' to 1, 'y' to 1)
-    val xy2 = ring.monomial('x' to 1, 'y' to 2)
     val x = ring.monomial('x' to 1)
+    val x2 = ring.monomial('x' to 2)
+    val y = ring.monomial('y' to 1)
     val y2 = ring.monomial('y' to 2)
-    val one = ring.monomial('x' to 0)
+    val one = ring.monomial()
 
 
-    val f = Polynomial<Int>(1 to xy2, -1 to x)
-    val g = Polynomial<Int>(1 to xy, 1 to one)
-    val h = Polynomial<Int>(1 to y2, -1 to one)
+    val f = Polynomial<Double>(2.0 to x2, -4.0 to x, 1.0 to y2, -4.0 to y, 3.0 to one)
+    val g = Polynomial<Double>(1.0 to x2, -2.0 to x, 3.0 to y2, -12.0 to y, 9.0 to one)
 
-    val polynomials = arrayOf(h, g)
-
-    val result = f / polynomials
-    for (i in result.first.indices) {
-        println("${result.first[i]} for ${polynomials[i]}")
-    }
-
-    println("Remainder : ${result.second}")
+    val gb = buchberger(listOf(f, g))
+    gb.forEach(::println)
 }

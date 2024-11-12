@@ -31,7 +31,9 @@ data class Polynomial<T : Number>(
             }
             .toList()
             .sortedWith { x, y -> -1 * ordering.compare(x.first, y.first) }
-            .map { Pair(it.second, it.first) }.toList()
+            .map { Pair(it.second, it.first) }
+            .toList()
+
     }
 
     fun multiDegree(): Map<Indeterminate, Int> {
@@ -73,5 +75,18 @@ data class Polynomial<T : Number>(
 
     override fun toString(): String {
         return _monomials.toString()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Polynomial<*>) return false
+
+        return _monomials == other._monomials
+    }
+
+    override fun hashCode(): Int {
+        var result = _monomials.hashCode()
+        result = 31 * result + ordering.hashCode()
+        return result
     }
 }

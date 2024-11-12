@@ -34,6 +34,8 @@ class Lexer {
                     number()
                 } else if (isAlpha(char)) {
                     tokens.add(Token(TokenType.INDETERMINATE, char))
+                } else if (char.isWhitespace()) {
+                    // A space, nothing to do
                 } else {
                     throw IllegalArgumentException("Unexpected character $char")
                 }

@@ -22,4 +22,20 @@ data class PolynomialRing<T : Number>(val indeterminates: Array<Indeterminate>) 
         val indeterminatesString = indeterminates.joinToString(", ")
         return "k[$indeterminatesString]"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        if (other !is PolynomialRing<*>) {
+            return false
+        }
+
+        return indeterminates.contentEquals(other.indeterminates)
+    }
+
+    override fun hashCode(): Int {
+        return indeterminates.contentHashCode()
+    }
 }

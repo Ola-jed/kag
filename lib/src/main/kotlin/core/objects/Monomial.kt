@@ -28,29 +28,16 @@ data class Monomial<T : Number>(
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other == null) {
-            return false
-        }
+        if (this === other) return true
+        if (other !is Monomial<*>) return false
+        if (ring != other.ring) return false
 
-        if (other !is Monomial<T>) {
-            return false
-        }
-
-        if (ring != other.ring) {
-            return false
-        }
-
-        if (exponents.filter { it.value != 0 } != other.exponents.filter { it.value != 0 }) {
-            return false
-        }
-
-        return true
+        return exponents.filter { it.value != 0 } == other.exponents.filter { it.value != 0 }
     }
 
     override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + ring.hashCode()
-        result = 31 * result + exponents.filter { it.value != 0 }.hashCode()
+        var result = ring.hashCode()
+        result = 31 * result + exponents.filter { it.value != 0 }.entries.toSet().hashCode()
         return result
     }
 }

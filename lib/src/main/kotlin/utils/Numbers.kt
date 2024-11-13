@@ -78,4 +78,17 @@ object Numbers {
             else                       -> throw IllegalArgumentException()
         }
     }
+
+    fun <T : Number> isZero(value: T): Boolean {
+        return when (value) {
+            is Int -> value == 0
+            is Long -> value == 0L
+            is Float -> value == 0.0f
+            is Double -> value == 0.0
+            is Short -> value == 0.toShort()
+            is Byte -> value == 0.toByte()
+            else -> throw IllegalArgumentException("Unsupported number type")
+        }
+    }
+
 }

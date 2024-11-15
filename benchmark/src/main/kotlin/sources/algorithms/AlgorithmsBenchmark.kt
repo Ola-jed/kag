@@ -1,7 +1,7 @@
 package sources.algorithms
 
 import config.KagConfig
-import core.functions.buchberger
+import core.algorithms.buchberger
 import core.objects.Indeterminate
 import core.objects.Monomial
 import core.objects.Polynomial

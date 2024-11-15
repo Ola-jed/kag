@@ -1,4 +1,4 @@
-package core.functions
+package core.algorithms
 
 import core.objects.Indeterminate
 import core.objects.Monomial

@@ -1,5 +1,6 @@
 import core.objects.Polynomial
 import core.objects.PolynomialRing
+import core.operators.*
 import parser.Lexer
 import parser.Parser
 
@@ -19,5 +20,6 @@ fun main() {
 //    val gb = buchberger(listOf(f, g))
 //    gb.forEach(::println)
 
+    println(x % xy)
 
 }

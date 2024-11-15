@@ -51,14 +51,12 @@ operator fun <T : Number> Monomial<T>.rem(rhs: Monomial<T>): Monomial<T> {
         this.ring == rhs.ring
     }
 
-    var resultExponents = mutableMapOf<Indeterminate, Int>()
-    for (indeterminateAndExponent in this.exponents) {
-        if (!rhs.exponents.containsKey(indeterminateAndExponent.key)) {
-            resultExponents.put(indeterminateAndExponent.key, indeterminateAndExponent.value)
-        }
+    val divisionResult = this.div(rhs)
+    return if(divisionResult.exponents.isEmpty()) {
+        this
+    } else {
+        Monomial(ring, emptyMap())
     }
-
-    return Monomial(this.ring, exponents = resultExponents)
 }
 
 operator fun <T : Number> Monomial<T>.times(rhs: Polynomial<T>): Polynomial<T> {

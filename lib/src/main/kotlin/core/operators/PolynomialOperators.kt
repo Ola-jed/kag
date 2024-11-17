@@ -47,6 +47,13 @@ operator fun <T : Number> Polynomial<T>.times(rhs: Polynomial<T>): Polynomial<T>
     return resultingPolynomial
 }
 
+operator fun <T : Number> Polynomial<T>.div(rhs: T): Polynomial<T> {
+    return Polynomial(
+        monomials = this.monomials.map { Numbers.div(it.first, rhs) to it.second }.toTypedArray(),
+        ordering = this.ordering
+    )
+}
+
 // Divide a polynomial by a set of polynomials, get the quotient for each polynomial of the set and the remainder
 // We assume the polynomials are defined using the same ordering
 operator fun <T : Number> Polynomial<T>.div(rhs: List<Polynomial<T>>): Pair<Array<Polynomial<T>>, Polynomial<T>> {

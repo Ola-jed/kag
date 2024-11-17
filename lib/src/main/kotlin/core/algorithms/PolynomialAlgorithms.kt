@@ -1,5 +1,6 @@
 package core.algorithms
 
+import core.objects.MacaulayMatrix
 import core.objects.Monomial
 import core.objects.Polynomial
 import core.operators.*
@@ -47,9 +48,11 @@ fun <T : Number> f4(polynomials: List<Polynomial<T>>): Collection<Polynomial<T>>
     while (criticalPairs.isNotEmpty()) {
         val selectedPairs = selection(criticalPairs)
         criticalPairs.removeAll(selectedPairs)
-        val pairs = left(selectedPairs) + right(selectedPairs)
-
-        TODO("Reduction")
+        val newBasis = reduction(selectedPairs, grobnerBasis)
+        for (polynomial in newBasis) {
+            grobnerBasis.add(polynomial)
+            criticalPairs.addAll(generateUniquePairs(newBasis))
+        }
     }
 
     return grobnerBasis
@@ -88,42 +91,53 @@ fun <T : Number> right(
         val lt = it.second.leadingTerm()
         val lcm = lcm(it.first.leadingMonomial(), lt.second)
         val quotient = (lcm / lt.second).toPolynomial(Numbers.inverse(lt.first))
-        quotient * it.first
+        quotient * it.second
     }
 }
 
-fun reduction() {
-    TODO()
+fun <T : Number> reduction(
+    pairs: List<Pair<Polynomial<T>, Polynomial<T>>>,
+    currentBasis: List<Polynomial<T>>
+): List<Polynomial<T>> {
+    val list = symbolicPreprocessing(pairs, currentBasis)
+    val macaulayMatrix = MacaulayMatrix(list)
+    macaulayMatrix.rowEchelonReduction()
+    val polynomials = macaulayMatrix.polynomials()
+    val allLeadingMonomials = list.map(Polynomial<T>::leadingMonomial).toSet()
+    return polynomials.filter { !allLeadingMonomials.contains(it.leadingMonomial()) }
 }
 
 fun <T : Number> symbolicPreprocessing(
     pairs: List<Pair<Polynomial<T>, Polynomial<T>>>,
     currentBasis: List<Polynomial<T>>
-) {
-    val l = (left(pairs) + right(pairs)).toMutableList()
-    val done = l.map { it.leadingMonomial() }.toMutableList()
-    var allMonomials = allMonomials(l).toMutableSet()
+): List<Polynomial<T>> {
+    val list = (left(pairs) + right(pairs)).toMutableList()
+    val done = list.map { it.leadingMonomial() }.toMutableSet()
+    var allMonomials = allMonomials(list).toMutableSet()
+
     while (done != allMonomials) {
         val largestMonomial = (allMonomials - done)
             .maxWith { x, y -> currentBasis[0].ordering.compare(x, y) }
-        done.add(largestMonomial)
 
+        done.add(largestMonomial)
         for (polynomial in currentBasis) {
             val lm = polynomial.leadingMonomial()
             val divisionResult = largestMonomial / lm
 
             if (divisionResult.exponents.isNotEmpty()) {
                 val polynomialAdded = divisionResult * polynomial
-                l.add(divisionResult * polynomial)
-                allMonomials.addAll(polynomialAdded.monomials.map { it.second })
+                list.add(divisionResult * polynomial)
+                allMonomials.addAll(polynomialAdded.monomials.map { it.second }.filter { it.degree > 0 })
                 break
             }
         }
     }
+
+    return list
 }
 
 fun <T : Number> allMonomials(
     polynomials: List<Polynomial<T>>
 ): Set<Monomial<T>> {
-    return polynomials.flatMap { it.monomials.map { it.second } }.toSet()
+    return polynomials.flatMap { it.monomials.map { it.second } }.filter { it.degree > 0 }.toSet()
 }

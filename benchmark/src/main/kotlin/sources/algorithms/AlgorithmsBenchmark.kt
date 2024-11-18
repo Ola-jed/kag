@@ -2,6 +2,7 @@ package sources.algorithms
 
 import config.KagConfig
 import core.algorithms.buchberger
+import core.algorithms.f4
 import core.objects.Indeterminate
 import core.objects.Monomial
 import core.objects.Polynomial
@@ -98,5 +99,10 @@ class AlgorithmsBenchmark {
     @Benchmark
     fun buchbergerBenchmark(): Collection<Polynomial<Double>> {
         return buchberger(listOf(polynomial1, polynomial2))
+    }
+
+    @Benchmark
+    fun f4Benchmark(): Collection<Polynomial<Double>> {
+        return f4(listOf(polynomial1, polynomial2))
     }
 }

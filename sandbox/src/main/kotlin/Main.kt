@@ -1,55 +1,29 @@
 import core.algorithms.minimizeBasis
+import core.algorithms.reduceBasis
 import core.objects.Polynomial
 import core.objects.PolynomialRing
 import core.order.CommonOrderings
 
 fun main() {
-    val ring = PolynomialRing<Double>('x', 'y')
+    val ring = PolynomialRing<Double>('x', 'y', 'z', 'w')
     val x = ring.monomial('x' to 1)
-    val x2 = ring.monomial('x' to 2)
     val y = ring.monomial('y' to 1)
-    val xy = ring.monomial('x' to 1, 'y' to 1)
-    val y2 = ring.monomial('y' to 2)
-    val one = ring.monomial()
+    val z = ring.monomial('z' to 1)
+    val w = ring.monomial('w' to 1)
 
-    val f = Polynomial<Double>(2.0 to x2, -4.0 to x, 1.0 to y2, -4.0 to y, 3.0 to one)
-    val g = Polynomial<Double>(1.0 to x2, -2.0 to x, 3.0 to y2, -12.0 to y, 9.0 to one)
-
+    val ordering = CommonOrderings.gradedLexicographicOrder<Double>()
 
     val gb = listOf(
-        // g1 = x^3 - 2xy
-        Polynomial(
-            1.0 to ring.monomial('x' to 3),
-            -2.0 to ring.monomial('x' to 1, 'y' to 1),
-            ordering = CommonOrderings.gradedLexicographicOrder()
-        ),
-        // g2 = x^2y - 2y^2 + x
-        Polynomial(
-            1.0 to ring.monomial('x' to 2, 'y' to 1),
-            -2.0 to ring.monomial('y' to 2),
-            1.0 to ring.monomial('x' to 1),
-            ordering = CommonOrderings.gradedLexicographicOrder()
-        ),
-        // g3 = x^2
-        Polynomial(
-            1.0 to ring.monomial('x' to 2),
-            ordering = CommonOrderings.gradedLexicographicOrder()
-        ),
-        // g4 = xy
-        Polynomial(
-            1.0 to ring.monomial('x' to 1, 'y' to 1),
-            ordering = CommonOrderings.gradedLexicographicOrder()
-        ),
-        // g5 = y^2 - (1/2)x
-        Polynomial(
-            1.0 to ring.monomial('y' to 2),
-            -0.5 to ring.monomial('x' to 1),
-            ordering = CommonOrderings.gradedLexicographicOrder()
-        )
+        Polynomial(3.0 to x, -6.0 to y, -2.0 to z, ordering = ordering),
+        Polynomial(2.0 to x, -4.0 to y, -4.0 to w, ordering = ordering),
+        Polynomial(1.0 to x, -2.0 to y, -1.0 to z, -1.0 to w, ordering = ordering),
+        Polynomial(1.0 to z, 3.0 to w, ordering = ordering),
     )
     println(gb)
-
+    println("====")
     println(minimizeBasis(gb))
+    println("====")
+    println(reduceBasis(gb))
 
 
 //    println("Buchberger")

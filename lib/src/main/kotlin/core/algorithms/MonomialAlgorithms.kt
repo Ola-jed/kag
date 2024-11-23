@@ -1,6 +1,5 @@
 package core.algorithms
 
-import core.objects.Indeterminate
 import core.objects.Monomial
 import utils.ensure
 import kotlin.math.max
@@ -10,13 +9,6 @@ fun <T : Number> lcm(x: Monomial<T>, y: Monomial<T>): Monomial<T> {
         x.ring == y.ring
     }
 
-    var exponents = mutableMapOf<Indeterminate, Int>()
-    for (indeterminate in x.ring.indeterminates) {
-        exponents[indeterminate] = max(
-            x.exponents.getOrDefault(indeterminate, 0),
-            y.exponents.getOrDefault(indeterminate, 0)
-        )
-    }
-
+    val exponents = x.ring.indeterminates.associateWith { max(x.exponents[it] ?: 0, y.exponents[it] ?: 0) }
     return Monomial(ring = x.ring, exponents = exponents)
 }
